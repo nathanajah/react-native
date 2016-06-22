@@ -39,9 +39,9 @@ const emptyFunction = require('fbjs/lib/emptyFunction');
 // Position of the left of the swipable item when closed
 const CLOSED_LEFT_POSITION = 0;
 // Minimum swipe distance before we recognize it as such
-const HORIZONTAL_SWIPE_DISTANCE_THRESHOLD = 15;
+const HORIZONTAL_SWIPE_DISTANCE_THRESHOLD = 10;
 // Minimum swipe speed before we fully animate the user's action (open/close)
-const HORIZONTAL_FULL_SWIPE_SPEED_THRESHOLD = 0.5;
+const HORIZONTAL_FULL_SWIPE_SPEED_THRESHOLD = 0.3;
 // Factor to divide by to get slow speed; i.e. 4 means 1/4 of full speed
 const SLOW_SPEED_SWIPE_FACTOR = 4;
 // Time, in milliseconds, of how long the animated swipe should be
@@ -78,6 +78,7 @@ const SwipeableRow = React.createClass({
   mixins: [TimerMixin],
 
   propTypes: {
+    children: PropTypes.any,
     isOpen: PropTypes.bool,
     maxSwipeDistance: PropTypes.number.isRequired,
     onOpen: PropTypes.func.isRequired,
@@ -206,12 +207,10 @@ const SwipeableRow = React.createClass({
   },
 
   _onSwipeableViewLayout(event: Object): void {
-    if (!this.state.isSwipeableViewRendered) {
-      this.setState({
-        isSwipeableViewRendered: true,
-        rowHeight: event.nativeEvent.layout.height,
-      });
-    }
+    this.setState({
+      isSwipeableViewRendered: true,
+      rowHeight: event.nativeEvent.layout.height,
+    });
   },
 
   _handleMoveShouldSetPanResponderCapture(
